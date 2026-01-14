@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const string corsName = "MyOrigins";
+
 
 
 builder.Services.AddControllers();
@@ -14,15 +14,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(corsName, policy =>
-    {
-        policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+const string corsName = "MyOrigins"; 
+builder.Services.AddCors(options => 
+{ 
+    options.AddPolicy(corsName, cpb => 
+    {  
+        cpb.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod() 
+            .AllowAnyHeader()
+            .AllowCredentials();
+    }); 
+}); 
 
 // 1. Base de données
 builder.Services.AddDbContext<AppDbContext>(options =>
